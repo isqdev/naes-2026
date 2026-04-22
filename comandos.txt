@@ -1,0 +1,11 @@
+### Conferir o models e preparar o SQL para o banco
+`python manage.py makemigrations`
+
+### Conferir o models e preparar o SQL para o banco
+`python manage.py makemigrations`
+
+### Usar o SQL preparado para criar as tabelas no banco
+`python manage.py makemigrations`
+
+### Criar um super usuário para acessar o admin do Django
+`python manage.py createsuperuser`
