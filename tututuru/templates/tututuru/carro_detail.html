@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block title %}Carro{% endblock %}
+
+{% block content %}
+<div class="section-head">
+  <div class="section-title">Detalhes do Carro</div>
+  <div class="d-flex gap-2">
+    <a class="btn-outline-f1" href="{% url 'tututuru:carro-lista' %}">Voltar</a>
+    <a class="btn-warning-f1" href="{% url 'tututuru:carro-editar' carro.pk %}"><i class="bi bi-pencil"></i> Editar</a>
+    <a class="btn-red" href="{% url 'tututuru:carro-excluir' carro.pk %}"><i class="bi bi-trash"></i> Excluir</a>
+  </div>
+</div>
+
+<div class="ds-card">
+  <div class="ds-card-title">Informacoes</div>
+  <p><strong>Modelo:</strong> {{ carro.modelo }}</p>
+  <p><strong>Equipe:</strong> {{ carro.equipe.nome }}</p>
+  <p><strong>Piloto:</strong> {{ carro.piloto.nome|default:"-" }}</p>
+  <p><strong>Ano:</strong> {{ carro.ano }}</p>
+  <p><strong>Numero:</strong> {{ carro.numero_carro }}</p>
+  <p class="mb-0"><strong>Chassi:</strong> {{ carro.chassi }}</p>
+</div>
+{% endblock %}
+

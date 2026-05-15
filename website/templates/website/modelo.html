@@ -1,767 +1,237 @@
+{% extends "base.html" %}
 {% load static %}
-<!DOCTYPE html>
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>tututuru</title>
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:ital,wght@0,300;0,400;0,600;0,700;0,900;1,400&family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet">
+{% block title %}tututuru{% endblock %}
 
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css">
-
-  <style>
-    :root {
-      --f1-red:          #E10600;
-      --f1-red-deep:     #B30500;
-      --f1-red-glow:     rgba(225,6,0,.35);
-      --bg-900:          #08090A;
-      --bg-800:          #0F1012;
-      --bg-700:          #15171A;
-      --bg-600:          #1C1E22;
-      --bg-500:          #252830;
-      --surface-card:    #111316;
-      --surface-hover:   #191B1F;
-      --text-primary:    #FFFFFF;
-      --text-secondary:  #A0A4AE;
-      --text-muted:      #565A66;
-      --border-subtle:   rgba(255,255,255,.07);
-      --border-mid:      rgba(255,255,255,.12);
-      --border-bright:   rgba(255,255,255,.22);
-      --success:         #00D2BE;
-      --info:            #0067FF;
-      --warning:         #FF8000;
-      --navbar-h:        60px;
-      --red-bar:         3px;
-    }
-
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; }
-    body {
-      background-color: var(--bg-900);
-      color: var(--text-primary);
-      font-family: 'Titillium Web', sans-serif;
-      font-weight: 400;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      overflow-x: hidden;
-    }
-
-    ::-webkit-scrollbar { width: 6px; }
-    ::-webkit-scrollbar-track { background: var(--bg-800); }
-    ::-webkit-scrollbar-thumb { background: var(--f1-red); border-radius: 0; }
-    ::selection { background: var(--f1-red); color: #fff; }
-
-    /* NAVBAR */
-    .f1-nav {
-      position: fixed; top: 0; left: 0; right: 0;
-      height: var(--navbar-h); z-index: 1000;
-      background: var(--bg-900);
-      border-bottom: 1px solid var(--border-subtle);
-    }
-    .f1-nav::after {
-      content: ''; position: absolute; bottom: 0; left: 0; right: 0;
-      height: var(--red-bar);
-      background: linear-gradient(90deg, var(--f1-red) 0%, var(--f1-red-deep) 60%, transparent 100%);
-    }
-    .nav-inner {
-      height: var(--navbar-h); display: flex; align-items: center;
-      padding: 0 1.5rem; gap: 0;
-    }
-    .f1-brand {
-      display: flex; align-items: center; gap: .5rem;
-      text-decoration: none; flex-shrink: 0; margin-right: 2.5rem;
-    }
-    .f1-brand-text {
-      font-family: 'Oswald', sans-serif; font-weight: 700; font-size: 1.1rem;
-      letter-spacing: .12em; text-transform: uppercase; color: #fff; line-height: 1;
-    }
-    .f1-brand-text span { color: var(--f1-red); }
-
-    .f1-nav-links {
-      display: flex; align-items: center; list-style: none; gap: 0;
-      flex: 1; justify-content: center;
-    }
-    .f1-nav-links .nav-link {
-      display: flex; align-items: center; gap: .35rem;
-      padding: 0 1rem; height: var(--navbar-h);
-      color: var(--text-secondary) !important;
-      font-family: 'Titillium Web', sans-serif; font-weight: 700;
-      font-size: .78rem; letter-spacing: .1em; text-transform: uppercase;
-      text-decoration: none; transition: color .2s; white-space: nowrap;
-      border-bottom: var(--red-bar) solid transparent;
-      margin-bottom: calc(var(--red-bar) * -1);
-    }
-    .f1-nav-links .nav-link:hover,
-    .f1-nav-links .nav-link.active {
-      color: var(--text-primary) !important;
-      border-bottom-color: var(--f1-red);
-    }
-    .f1-nav-links .dropdown-menu {
-      background: var(--bg-700); border: 1px solid var(--border-mid);
-      border-top: var(--red-bar) solid var(--f1-red); border-radius: 0;
-      padding: .5rem 0; margin-top: 0 !important; min-width: 200px;
-      box-shadow: 0 20px 40px rgba(0,0,0,.6);
-    }
-    .f1-nav-links .dropdown-item {
-      color: var(--text-secondary); font-family: 'Titillium Web', sans-serif;
-      font-weight: 600; font-size: .78rem; letter-spacing: .08em;
-      text-transform: uppercase; padding: .6rem 1.2rem;
-      display: flex; align-items: center; gap: .6rem; transition: background .15s, color .15s;
-    }
-    .f1-nav-links .dropdown-item:hover { background: var(--bg-600); color: #fff; }
-    .f1-nav-links .dropdown-item .dot { width: 6px; height: 6px; background: var(--f1-red); border-radius: 50%; flex-shrink: 0; }
-    .f1-nav-links .dropdown-divider { border-color: var(--border-subtle); }
-
-    .f1-nav-auth { display: flex; align-items: center; gap: .75rem; flex-shrink: 0; margin-left: 2rem; }
-
-    .btn-ghost {
-      background: transparent; border: 1px solid var(--border-mid);
-      color: var(--text-secondary); font-family: 'Titillium Web', sans-serif;
-      font-weight: 700; font-size: .75rem; letter-spacing: .1em; text-transform: uppercase;
-      padding: .45rem 1.1rem; border-radius: 0; transition: border-color .2s, color .2s;
-      text-decoration: none; display: inline-flex; align-items: center; gap: .4rem; cursor: pointer;
-    }
-    .btn-ghost:hover { border-color: var(--border-bright); color: #fff; }
-
-    .btn-red {
-      background: var(--f1-red); border: none; color: #fff;
-      font-family: 'Titillium Web', sans-serif; font-weight: 700; font-size: .75rem;
-      letter-spacing: .1em; text-transform: uppercase; padding: .45rem 1.3rem;
-      border-radius: 0; transition: background .2s, transform .15s;
-      text-decoration: none; display: inline-flex; align-items: center; gap: .4rem; cursor: pointer;
-    }
-    .btn-red:hover { background: var(--f1-red-deep); color: #fff; transform: translateY(-1px); }
-
-    .f1-user-btn {
-      background: var(--bg-600); border: 1px solid var(--border-mid);
-      color: var(--text-primary); font-family: 'Titillium Web', sans-serif;
-      font-weight: 700; font-size: .75rem; letter-spacing: .08em; text-transform: uppercase;
-      padding: .4rem .9rem; border-radius: 0;
-      display: flex; align-items: center; gap: .5rem; cursor: pointer; transition: border-color .2s;
-    }
-    .f1-user-btn:hover { border-color: var(--f1-red); }
-    .f1-avatar {
-      width: 26px; height: 26px; background: var(--f1-red); border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
-      font-size: .7rem; font-weight: 900; color: #fff;
-    }
-    .user-dropdown {
-      background: var(--bg-700); border: 1px solid var(--border-mid);
-      border-top: var(--red-bar) solid var(--f1-red); border-radius: 0;
-      padding: .5rem 0; min-width: 190px; box-shadow: 0 20px 40px rgba(0,0,0,.7);
-    }
-    .user-dropdown .dropdown-item {
-      color: var(--text-secondary); font-family: 'Titillium Web', sans-serif;
-      font-weight: 600; font-size: .78rem; letter-spacing: .08em; text-transform: uppercase;
-      padding: .6rem 1.2rem; display: flex; align-items: center; gap: .6rem;
-      transition: background .15s, color .15s;
-    }
-    .user-dropdown .dropdown-item:hover { background: var(--bg-600); color: #fff; }
-    .user-dropdown .dropdown-item.logout { color: var(--f1-red) !important; }
-    .user-dropdown .dropdown-item.logout:hover { background: rgba(225,6,0,.12); }
-    .user-dropdown .dropdown-divider { border-color: var(--border-subtle); }
-
-    .f1-toggler {
-      display: none; background: transparent; border: 1px solid var(--border-mid);
-      padding: .4rem .6rem; cursor: pointer; color: var(--text-secondary);
-      font-size: 1.2rem; margin-left: auto;
-    }
-
-    /* HERO */
-    .f1-hero {
-      margin-top: var(--navbar-h); background: var(--bg-800);
-      position: relative; overflow: hidden; padding: 5rem 0 4rem;
-      border-bottom: 1px solid var(--border-subtle);
-    }
-    .f1-hero::before {
-      content: ''; position: absolute; inset: 0;
-      background-image: repeating-linear-gradient(-55deg, transparent, transparent 40px, rgba(255,255,255,.018) 40px, rgba(255,255,255,.018) 41px);
-      pointer-events: none;
-    }
-    .f1-hero::after {
-      content: ''; position: absolute; left: 0; top: 0; bottom: 0;
-      width: 4px; background: var(--f1-red);
-    }
-    .hero-eyebrow {
-      font-size: .7rem; font-weight: 700; letter-spacing: .22em; text-transform: uppercase;
-      color: var(--f1-red); margin-bottom: 1rem; display: flex; align-items: center; gap: .5rem;
-    }
-    .hero-eyebrow::before { content: ''; display: inline-block; width: 24px; height: 2px; background: var(--f1-red); }
-    .hero-title {
-      font-family: 'Oswald', sans-serif; font-weight: 700;
-      font-size: clamp(2.8rem, 6vw, 5.5rem); text-transform: uppercase;
-      line-height: .92; letter-spacing: -.01em; margin-bottom: 1.5rem;
-    }
-    .hero-title .red { color: var(--f1-red); }
-    .hero-sub { color: var(--text-secondary); font-size: 1rem; max-width: 460px; line-height: 1.6; margin-bottom: 2.5rem; }
-    .hero-stats { display: flex; gap: 2.5rem; flex-wrap: wrap; }
-    .hero-stat-num { font-family: 'Oswald', sans-serif; font-size: 2.2rem; font-weight: 700; color: #fff; line-height: 1; }
-    .hero-stat-label { font-size: .7rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--text-muted); margin-top: .2rem; }
-    .hero-circuit {
-      position: absolute; right: -40px; top: 50%; transform: translateY(-50%);
-      opacity: .05; pointer-events: none; width: 520px;
-    }
-
-    /* MAIN */
-    .f1-main { flex: 1; padding: 2.5rem 0 4rem; background: var(--bg-900); }
-
-    .section-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 1rem; margin-bottom: 1.5rem; flex-wrap: wrap; }
-    .section-title {
-      font-family: 'Oswald', sans-serif; font-size: 1.5rem; font-weight: 700;
-      text-transform: uppercase; letter-spacing: .04em; color: #fff;
-      display: flex; align-items: center; gap: .6rem;
-    }
-    .section-title::before { content: ''; display: inline-block; width: 4px; height: 1.4rem; background: var(--f1-red); }
-
-    /* STAT CARDS */
-    .stat-card {
-      background: var(--surface-card); border: 1px solid var(--border-subtle);
-      border-top: 3px solid transparent; padding: 1.4rem 1.5rem;
-      position: relative; transition: border-color .2s, transform .2s; overflow: hidden;
-    }
-    .stat-card:hover { border-color: var(--border-mid); border-top-color: var(--f1-red); transform: translateY(-2px); }
-    .stat-card::after {
-      content: ''; position: absolute; right: -20px; bottom: -20px;
-      width: 90px; height: 90px; border-radius: 50%;
-      background: var(--f1-red-glow); filter: blur(30px); opacity: 0; transition: opacity .3s;
-    }
-    .stat-card:hover::after { opacity: 1; }
-    .stat-icon {
-      width: 36px; height: 36px; background: rgba(225,6,0,.12);
-      border: 1px solid rgba(225,6,0,.2); display: flex; align-items: center;
-      justify-content: center; font-size: 1rem; color: var(--f1-red); margin-bottom: 1rem;
-    }
-    .stat-val { font-family: 'Oswald', sans-serif; font-size: 2.4rem; font-weight: 700; color: #fff; line-height: 1; margin-bottom: .2rem; }
-    .stat-lbl { font-size: .7rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--text-muted); }
-    .stat-delta { font-size: .75rem; font-weight: 600; margin-top: .6rem; }
-
-    /* TABLE */
-    .f1-table-wrap { background: var(--surface-card); border: 1px solid var(--border-subtle); overflow: hidden; }
-    .f1-table-header {
-      padding: 1rem 1.4rem; border-bottom: 1px solid var(--border-subtle);
-      display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap;
-    }
-    .f1-table-title { font-family: 'Oswald', sans-serif; font-size: 1rem; font-weight: 600; text-transform: uppercase; letter-spacing: .08em; color: #fff; display: flex; align-items: center; gap: .5rem; }
-    .f1-table { width: 100%; border-collapse: collapse; }
-    .f1-table thead tr { background: var(--bg-700); border-bottom: 2px solid var(--f1-red); }
-    .f1-table thead th { font-family: 'Titillium Web', sans-serif; font-weight: 700; font-size: .68rem; letter-spacing: .16em; text-transform: uppercase; color: var(--text-muted); padding: .75rem 1.2rem; text-align: left; white-space: nowrap; }
-    .f1-table tbody tr { border-bottom: 1px solid var(--border-subtle); transition: background .15s; }
-    .f1-table tbody tr:last-child { border-bottom: none; }
-    .f1-table tbody tr:hover { background: var(--surface-hover); }
-    .f1-table td { padding: .85rem 1.2rem; font-size: .875rem; color: var(--text-secondary); vertical-align: middle; }
-    .f1-table td.bold { color: #fff; font-weight: 600; }
-    .pos-badge { width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; font-family: 'Oswald', sans-serif; font-weight: 700; font-size: .9rem; border: 1px solid var(--border-mid); }
-    .pos-badge.gold   { background: rgba(255,200,0,.1); border-color: #FFC800; color: #FFC800; }
-    .pos-badge.silver { background: rgba(192,192,192,.1); border-color: #C0C0C0; color: #C0C0C0; }
-    .pos-badge.bronze { background: rgba(205,127,50,.1); border-color: #CD7F32; color: #CD7F32; }
-    .team-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; margin-right: .4rem; }
-    .pts { font-family: 'Oswald', sans-serif; font-size: 1.1rem; font-weight: 700; color: #fff !important; }
-    .act-btn {
-      width: 30px; height: 30px; display: inline-flex; align-items: center; justify-content: center;
-      background: transparent; border: 1px solid var(--border-subtle); color: var(--text-muted);
-      font-size: .8rem; cursor: pointer; transition: border-color .15s, color .15s, background .15s;
-      text-decoration: none; border-radius: 0;
-    }
-    .act-btn:hover { border-color: var(--border-bright); color: #fff; background: var(--bg-600); }
-    .act-btn.danger:hover { border-color: var(--f1-red); color: var(--f1-red); background: rgba(225,6,0,.08); }
-
-    /* RACE CARDS */
-    .race-card {
-      background: var(--surface-card); border: 1px solid var(--border-subtle);
-      padding: 1.2rem; display: flex; align-items: center; gap: 1rem;
-      transition: border-color .2s, transform .2s; cursor: pointer; text-decoration: none;
-    }
-    .race-card:hover { border-color: var(--f1-red); transform: translateX(3px); }
-    .race-round { font-family: 'Oswald', sans-serif; font-size: 1.6rem; font-weight: 700; color: var(--f1-red); line-height: 1; min-width: 36px; text-align: center; }
-    .race-round-lbl { font-size: .6rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--text-muted); text-align: center; }
-    .vline { width: 1px; height: 40px; background: var(--border-mid); flex-shrink: 0; }
-    .race-name { font-family: 'Oswald', sans-serif; font-size: 1rem; font-weight: 600; text-transform: uppercase; color: #fff; letter-spacing: .04em; }
-    .race-circuit { font-size: .75rem; color: var(--text-muted); margin-top: .15rem; }
-    .race-date { margin-left: auto; text-align: right; flex-shrink: 0; }
-    .race-date-val { font-family: 'Oswald', sans-serif; font-size: .95rem; font-weight: 600; color: var(--text-secondary); }
-    .race-date-cc { font-size: .7rem; color: var(--text-muted); text-align: right; }
-
-    /* DESIGN SYSTEM CARDS */
-    .ds-card { background: var(--surface-card); border: 1px solid var(--border-subtle); padding: 1.5rem; }
-    .ds-card-title { font-size: .68rem; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 1.2rem; padding-bottom: .75rem; border-bottom: 1px solid var(--border-subtle); }
-
-    /* BADGES */
-    .f1-badge { font-family: 'Titillium Web', sans-serif; font-weight: 700; font-size: .65rem; letter-spacing: .12em; text-transform: uppercase; padding: .25rem .65rem; border-radius: 0; display: inline-block; }
-    .badge-red     { background: rgba(225,6,0,.15); color: var(--f1-red); border: 1px solid rgba(225,6,0,.3); }
-    .badge-teal    { background: rgba(0,210,190,.1); color: var(--success); border: 1px solid rgba(0,210,190,.3); }
-    .badge-orange  { background: rgba(255,128,0,.1); color: var(--warning); border: 1px solid rgba(255,128,0,.3); }
-    .badge-blue    { background: rgba(0,103,255,.1); color: var(--info); border: 1px solid rgba(0,103,255,.3); }
-    .badge-neutral { background: rgba(255,255,255,.06); color: var(--text-secondary); border: 1px solid var(--border-subtle); }
-
-    /* BUTTONS */
-    .btn-success-f1 { background: rgba(0,210,190,.1); border: 1px solid var(--success); color: var(--success); font-family: 'Titillium Web', sans-serif; font-weight: 700; font-size: .75rem; letter-spacing: .1em; text-transform: uppercase; padding: .5rem 1.1rem; border-radius: 0; cursor: pointer; display: inline-flex; align-items: center; gap: .4rem; transition: all .2s; }
-    .btn-success-f1:hover { background: rgba(0,210,190,.2); }
-    .btn-warning-f1 { background: rgba(255,128,0,.1); border: 1px solid var(--warning); color: var(--warning); font-family: 'Titillium Web', sans-serif; font-weight: 700; font-size: .75rem; letter-spacing: .1em; text-transform: uppercase; padding: .5rem 1.1rem; border-radius: 0; cursor: pointer; display: inline-flex; align-items: center; gap: .4rem; transition: all .2s; }
-    .btn-warning-f1:hover { background: rgba(255,128,0,.2); }
-    .btn-outline-f1 { background: transparent; border: 1px solid var(--border-mid); color: var(--text-secondary); font-family: 'Titillium Web', sans-serif; font-weight: 700; font-size: .75rem; letter-spacing: .1em; text-transform: uppercase; padding: .5rem 1.1rem; border-radius: 0; cursor: pointer; transition: all .2s; display: inline-flex; align-items: center; gap: .4rem; }
-    .btn-outline-f1:hover { border-color: var(--border-bright); color: #fff; }
-
-    /* ALERTS */
-    .f1-alert { padding: .9rem 1.2rem; font-size: .85rem; font-weight: 600; display: flex; align-items: flex-start; gap: .75rem; border-left: 3px solid; letter-spacing: .02em; margin-bottom: .75rem; }
-    .f1-alert .ai { font-size: 1rem; flex-shrink: 0; margin-top: .05rem; }
-    .alert-success { background: rgba(0,210,190,.07); border-color: var(--success); color: var(--success); }
-    .alert-warning { background: rgba(255,128,0,.07); border-color: var(--warning); color: var(--warning); }
-    .alert-danger  { background: rgba(225,6,0,.08);   border-color: var(--f1-red);   color: var(--f1-red); }
-    .alert-info    { background: rgba(0,103,255,.07); border-color: var(--info);    color: var(--info); }
-
-    /* INPUT */
-    .f1-input { background: var(--bg-700); border: 1px solid var(--border-mid); border-radius: 0; color: #fff; font-family: 'Titillium Web', sans-serif; font-size: .875rem; padding: .55rem .9rem; width: 100%; transition: border-color .2s; }
-    .f1-input:focus { outline: none; border-color: var(--f1-red); background: var(--bg-600); box-shadow: 0 0 0 3px rgba(225,6,0,.15); }
-    .f1-input::placeholder { color: var(--text-muted); }
-    .f1-lbl { font-size: .68rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--text-muted); display: block; margin-bottom: .4rem; }
-
-    .f1-divider { border: none; height: 1px; background: var(--border-subtle); margin: 2rem 0; }
-
-    /* DEMO STRIP */
-    .demo-strip { background: rgba(225,6,0,.06); border: 1px solid rgba(225,6,0,.15); padding: .6rem 1rem; display: flex; align-items: center; gap: .75rem; font-size: .75rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--f1-red); flex-wrap: wrap; }
-
-    /* FOOTER */
-    .f1-footer { background: var(--bg-800); border-top: 1px solid var(--border-subtle); padding: 3rem 0 1.5rem; flex-shrink: 0; }
-    .f1-footer::before { content: ''; display: block; height: var(--red-bar); background: linear-gradient(90deg, var(--f1-red), var(--f1-red-deep) 60%, transparent); margin-bottom: 3rem; margin-top: -3rem; }
-    .footer-brand { font-family: 'Oswald', sans-serif; font-weight: 700; font-size: 1.3rem; text-transform: uppercase; letter-spacing: .1em; color: #fff; display: flex; align-items: center; gap: .4rem; margin-bottom: .6rem; }
-    .footer-brand .red { color: var(--f1-red); }
-    .footer-desc { color: var(--text-muted); font-size: .82rem; line-height: 1.6; max-width: 260px; }
-    .footer-heading { font-size: .65rem; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; color: var(--text-muted); margin-bottom: .9rem; padding-bottom: .5rem; border-bottom: 1px solid var(--border-subtle); }
-    .footer-links { list-style: none; display: flex; flex-direction: column; gap: .4rem; }
-    .footer-links a { color: var(--text-secondary); text-decoration: none; font-size: .82rem; font-weight: 600; letter-spacing: .04em; display: flex; align-items: center; gap: .4rem; transition: color .15s; }
-    .footer-links a:hover { color: #fff; }
-    .footer-links a::before { content: ''; width: 4px; height: 4px; background: var(--f1-red); border-radius: 50%; flex-shrink: 0; }
-    .footer-bottom { margin-top: 2.5rem; padding-top: 1.2rem; border-top: 1px solid var(--border-subtle); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: .5rem; }
-    .footer-copy { font-size: .75rem; color: var(--text-muted); letter-spacing: .04em; }
-
-    /* ANIMATIONS */
-    @keyframes slideInLeft { from { opacity:0; transform: translateX(-20px); } to { opacity:1; transform: translateX(0); } }
-    @keyframes fadeUp { from { opacity:0; transform: translateY(16px); } to { opacity:1; transform: translateY(0); } }
-    .anim-1 { animation: slideInLeft .6s ease both; }
-    .anim-2 { animation: slideInLeft .6s .1s ease both; }
-    .anim-3 { animation: fadeUp .6s .2s ease both; }
-    .anim-4 { animation: fadeUp .6s .35s ease both; }
-
-    /* RESPONSIVE */
-    @media (max-width: 991px) {
-      .f1-toggler { display: flex; }
-      .f1-nav-links { display: none; flex-direction: column; height: auto; gap: 0; }
-      .f1-nav-links.open { display: flex; position: fixed; top: var(--navbar-h); left: 0; right: 0; background: var(--bg-800); border-bottom: var(--red-bar) solid var(--f1-red); padding: .5rem 0 1rem; z-index: 999; max-height: calc(100vh - var(--navbar-h)); overflow-y: auto; }
-      .f1-nav-links .nav-link { height: auto; padding: .7rem 1.5rem !important; border-bottom: none; border-left: 3px solid transparent; }
-      .f1-nav-links .nav-link:hover, .f1-nav-links .nav-link.active { border-left-color: var(--f1-red); border-bottom: none; }
-      .f1-nav-links .dropdown-menu { position: static !important; transform: none !important; border-top: none; border-left: 3px solid var(--f1-red); margin-left: 1.5rem !important; margin-bottom: .5rem; box-shadow: none; background: var(--bg-900); }
-      .f1-nav-auth { display: none !important; }
-      .hero-circuit { display: none; }
-    }
-
-    .text-red { color: var(--f1-red); }
-    .text-teal { color: var(--success); }
-  </style>
-</head>
-<body>
-
-  <!-- NAVBAR -->
-  <nav class="f1-nav">
-    <div class="container-fluid px-0">
-      <div class="nav-inner">
-
-        <a href="#" class="f1-brand">
-          <span class="f1-brand-text">tututuru</span>
-        </a>
-
-        <ul class="f1-nav-links" id="navLinks">
-          <li class="nav-item">
-            <a href="#" class="nav-link active"><i class="bi bi-speedometer2"></i> Dashboard</a>
-          </li>
-          <li class="nav-item dropdown">
-            <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
-              <i class="bi bi-grid-3x3-gap"></i> Cadastros
-            </a>
-            <ul class="dropdown-menu">
-              <li><a class="dropdown-item" href="#"><span class="dot"></span>Pilotos</a></li>
-              <li><a class="dropdown-item" href="#"><span class="dot"></span>Escuderias</a></li>
-              <li><a class="dropdown-item" href="#"><span class="dot"></span>Carros</a></li>
-              <li><hr class="dropdown-divider"></li>
-              <li><a class="dropdown-item" href="#"><span class="dot"></span>Circuitos</a></li>
-              <li><a class="dropdown-item" href="#"><span class="dot"></span>Corridas</a></li>
-              <li><a class="dropdown-item" href="#"><span class="dot"></span>Resultados</a></li>
-            </ul>
-          </li>
-          <li class="nav-item dropdown">
-            <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
-              <i class="bi bi-calendar3"></i> Temporadas
-            </a>
-            <ul class="dropdown-menu">
-              <li><a class="dropdown-item" href="#">2025 — Atual</a></li>
-              <li><a class="dropdown-item" href="#">2024</a></li>
-              <li><a class="dropdown-item" href="#">2023</a></li>
-              <li><hr class="dropdown-divider"></li>
-              <li><a class="dropdown-item" href="#"><span class="dot"></span>Arquivo histórico</a></li>
-            </ul>
-          </li>
-          <li class="nav-item">
-            <a href="#" class="nav-link"><i class="bi bi-trophy"></i> Classificação</a>
-          </li>
-          <li class="nav-item">
-            <a href="#" class="nav-link"><i class="bi bi-bar-chart-line"></i> Estatísticas</a>
-          </li>
-        </ul>
-
-        <button class="f1-toggler" id="navToggler"><i class="bi bi-list"></i></button>
-
-        <!-- Guest auth -->
-        <div class="f1-nav-auth" id="authGuest">
-          <a href="#" class="btn-ghost"><i class="bi bi-person"></i> Entrar</a>
-          <button class="btn-red" id="demoLoginTrigger"><i class="bi bi-person-plus"></i> Cadastrar</button>
-        </div>
-
-        <!-- User auth -->
-        <div class="f1-nav-auth d-none" id="authUser" style="margin-left:1.5rem;">
-          <div class="dropdown">
-            <button class="f1-user-btn dropdown-toggle" data-bs-toggle="dropdown">
-              <div class="f1-avatar">LH</div>
-              <span>Lewis H.</span>
-            </button>
-            <ul class="dropdown-menu user-dropdown dropdown-menu-end">
-              <li><div style="padding:.6rem 1.2rem .2rem;font-size:.65rem;letter-spacing:.12em;text-transform:uppercase;color:var(--text-muted);font-weight:700;">Conta</div></li>
-              <li><a class="dropdown-item" href="#"><i class="bi bi-person" style="width:16px;"></i>Perfil</a></li>
-              <li><a class="dropdown-item" href="#"><i class="bi bi-gear" style="width:16px;"></i>Configurações</a></li>
-              <li><a class="dropdown-item" href="#"><i class="bi bi-bell" style="width:16px;"></i>Notificações <span class="f1-badge badge-red ms-auto">3</span></a></li>
-              <li><hr class="dropdown-divider"></li>
-              <li><a class="dropdown-item logout" href="#" id="logoutBtn"><i class="bi bi-box-arrow-right" style="width:16px;"></i>Sair</a></li>
-            </ul>
-          </div>
-        </div>
-
-      </div>
-    </div>
-  </nav>
-
-  <!-- HERO -->
-  <section class="f1-hero">
-    <svg class="hero-circuit" viewBox="0 0 500 400" fill="none">
-      <path d="M50 200 Q150 50 300 80 Q420 100 450 200 Q480 300 380 340 Q250 380 150 320 Q60 270 50 200Z" stroke="white" stroke-width="18" fill="none" stroke-linecap="round"/>
-      <path d="M150 200 Q200 130 280 150 Q350 170 370 220 Q390 280 320 300 Q240 320 180 280 Q130 250 150 200Z" stroke="white" stroke-width="12" fill="none" stroke-linecap="round"/>
-      <circle cx="100" cy="175" r="8" fill="white"/>
-      <circle cx="420" cy="160" r="8" fill="white"/>
-    </svg>
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-8">
-          <div class="hero-eyebrow anim-1">Temporada 2025</div>
-          <h1 class="hero-title anim-2">Gerencie o<br>mundo da <span class="red">Fórmula 1</span></h1>
-          <p class="hero-sub anim-3">Pilotos, escuderias, circuitos, carros e resultados. Tudo em um sistema de gestão veloz como o esporte.</p>
-          <div class="hero-stats anim-4">
-            <div><div class="hero-stat-num">20</div><div class="hero-stat-label">Pilotos</div></div>
-            <div><div class="hero-stat-num">10</div><div class="hero-stat-label">Escuderias</div></div>
-            <div><div class="hero-stat-num">24</div><div class="hero-stat-label">GPs 2025</div></div>
-            <div><div class="hero-stat-num">21</div><div class="hero-stat-label">Países</div></div>
-          </div>
+{% block hero %}
+<section class="f1-hero">
+  <svg class="hero-circuit" viewBox="0 0 500 400" fill="none">
+    <path d="M50 200 Q150 50 300 80 Q420 100 450 200 Q480 300 380 340 Q250 380 150 320 Q60 270 50 200Z" stroke="white" stroke-width="18" fill="none" stroke-linecap="round"/>
+    <path d="M150 200 Q200 130 280 150 Q350 170 370 220 Q390 280 320 300 Q240 320 180 280 Q130 250 150 200Z" stroke="white" stroke-width="12" fill="none" stroke-linecap="round"/>
+    <circle cx="100" cy="175" r="8" fill="white"/>
+    <circle cx="420" cy="160" r="8" fill="white"/>
+  </svg>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8">
+        <div class="hero-eyebrow anim-1">Temporada 2025</div>
+        <h1 class="hero-title anim-2">Gerencie o<br>mundo da <span class="red">Fórmula 1</span></h1>
+        <p class="hero-sub anim-3">Pilotos, escuderias, circuitos, carros e resultados. Tudo em um sistema de gestão veloz como o esporte.</p>
+        <div class="hero-stats anim-4">
+          <div><div class="hero-stat-num">20</div><div class="hero-stat-label">Pilotos</div></div>
+          <div><div class="hero-stat-num">10</div><div class="hero-stat-label">Escuderias</div></div>
+          <div><div class="hero-stat-num">24</div><div class="hero-stat-label">GPs 2025</div></div>
+          <div><div class="hero-stat-num">21</div><div class="hero-stat-label">Países</div></div>
         </div>
       </div>
     </div>
-  </section>
+  </div>
+</section>
+{% endblock %}
 
-  <!-- MAIN -->
-  <main class="f1-main">
-    <div class="container">
-
-      <!-- STAT CARDS -->
-      <div class="row g-3 mb-5">
-        <div class="col-6 col-lg-3">
-          <div class="stat-card">
-            <div class="stat-icon"><i class="bi bi-person-badge-fill"></i></div>
-            <div class="stat-val">20</div>
-            <div class="stat-lbl">Pilotos</div>
-            <div class="stat-delta text-teal"><i class="bi bi-arrow-up"></i> +2 esta temporada</div>
-          </div>
-        </div>
-        <div class="col-6 col-lg-3">
-          <div class="stat-card">
-            <div class="stat-icon"><i class="bi bi-shield-fill"></i></div>
-            <div class="stat-val">10</div>
-            <div class="stat-lbl">Escuderias</div>
-            <div class="stat-delta" style="color:var(--text-muted);">Grade completa</div>
-          </div>
-        </div>
-        <div class="col-6 col-lg-3">
-          <div class="stat-card">
-            <div class="stat-icon"><i class="bi bi-flag-fill"></i></div>
-            <div class="stat-val">24</div>
-            <div class="stat-lbl">Corridas</div>
-            <div class="stat-delta" style="color:var(--warning);"><i class="bi bi-circle-fill" style="font-size:.5rem;"></i> 18 restantes</div>
-          </div>
-        </div>
-        <div class="col-6 col-lg-3">
-          <div class="stat-card">
-            <div class="stat-icon"><i class="bi bi-map-fill"></i></div>
-            <div class="stat-val">21</div>
-            <div class="stat-lbl">Circuitos</div>
-            <div class="stat-delta text-teal"><i class="bi bi-plus"></i> 1 novo</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- TABLE + RACES -->
-      <div class="row g-4 mb-5">
-
-        <div class="col-lg-8">
-          <div class="section-head">
-            <div class="section-title">Classificação — Pilotos</div>
-            <div class="d-flex gap-2">
-              <button class="btn-outline-f1"><i class="bi bi-funnel"></i> Filtrar</button>
-              <button class="btn-red"><i class="bi bi-plus-lg"></i> Novo</button>
-            </div>
-          </div>
-          <div class="f1-table-wrap">
-            <div class="f1-table-header">
-              <span class="f1-table-title"><i class="bi bi-trophy-fill text-red"></i> WDC 2025</span>
-              <span class="f1-badge badge-red">Ao vivo</span>
-            </div>
-            <div style="overflow-x:auto;">
-              <table class="f1-table">
-                <thead>
-                  <tr>
-                    <th style="width:50px;">Pos</th>
-                    <th>Piloto</th>
-                    <th>Escuderia</th>
-                    <th>Nac.</th>
-                    <th style="text-align:right;">Pontos</th>
-                    <th style="text-align:center;width:110px;">Ações</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td><div class="pos-badge gold">1</div></td>
-                    <td class="bold">Max Verstappen</td>
-                    <td><span class="team-dot" style="background:#1E40FF;"></span><span class="f1-badge badge-blue">Red Bull</span></td>
-                    <td>🇳🇱</td>
-                    <td class="pts" style="text-align:right;">395</td>
-                    <td style="text-align:center;"><div class="d-flex gap-1 justify-content-center"><a href="#" class="act-btn"><i class="bi bi-eye"></i></a><a href="#" class="act-btn"><i class="bi bi-pencil"></i></a><a href="#" class="act-btn danger"><i class="bi bi-trash"></i></a></div></td>
-                  </tr>
-                  <tr>
-                    <td><div class="pos-badge silver">2</div></td>
-                    <td class="bold">Lewis Hamilton</td>
-                    <td><span class="team-dot" style="background:#E10600;"></span><span class="f1-badge badge-red">Ferrari</span></td>
-                    <td>🇬🇧</td>
-                    <td class="pts" style="text-align:right;">340</td>
-                    <td style="text-align:center;"><div class="d-flex gap-1 justify-content-center"><a href="#" class="act-btn"><i class="bi bi-eye"></i></a><a href="#" class="act-btn"><i class="bi bi-pencil"></i></a><a href="#" class="act-btn danger"><i class="bi bi-trash"></i></a></div></td>
-                  </tr>
-                  <tr>
-                    <td><div class="pos-badge bronze">3</div></td>
-                    <td class="bold">Lando Norris</td>
-                    <td><span class="team-dot" style="background:#FF8000;"></span><span class="f1-badge badge-orange">McLaren</span></td>
-                    <td>🇬🇧</td>
-                    <td class="pts" style="text-align:right;">310</td>
-                    <td style="text-align:center;"><div class="d-flex gap-1 justify-content-center"><a href="#" class="act-btn"><i class="bi bi-eye"></i></a><a href="#" class="act-btn"><i class="bi bi-pencil"></i></a><a href="#" class="act-btn danger"><i class="bi bi-trash"></i></a></div></td>
-                  </tr>
-                  <tr>
-                    <td><div class="pos-badge">4</div></td>
-                    <td class="bold">Charles Leclerc</td>
-                    <td><span class="team-dot" style="background:#E10600;"></span><span class="f1-badge badge-red">Ferrari</span></td>
-                    <td>🇲🇨</td>
-                    <td class="pts" style="text-align:right;">280</td>
-                    <td style="text-align:center;"><div class="d-flex gap-1 justify-content-center"><a href="#" class="act-btn"><i class="bi bi-eye"></i></a><a href="#" class="act-btn"><i class="bi bi-pencil"></i></a><a href="#" class="act-btn danger"><i class="bi bi-trash"></i></a></div></td>
-                  </tr>
-                  <tr>
-                    <td><div class="pos-badge">5</div></td>
-                    <td class="bold">Carlos Sainz</td>
-                    <td><span class="team-dot" style="background:#00D2BE;"></span><span class="f1-badge badge-teal">Williams</span></td>
-                    <td>🇪🇸</td>
-                    <td class="pts" style="text-align:right;">241</td>
-                    <td style="text-align:center;"><div class="d-flex gap-1 justify-content-center"><a href="#" class="act-btn"><i class="bi bi-eye"></i></a><a href="#" class="act-btn"><i class="bi bi-pencil"></i></a><a href="#" class="act-btn danger"><i class="bi bi-trash"></i></a></div></td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-lg-4">
-          <div class="section-head">
-            <div class="section-title">Calendário</div>
-          </div>
-          <div class="d-flex flex-column gap-2">
-            <a href="#" class="race-card">
-              <div><div class="race-round">06</div><div class="race-round-lbl">Round</div></div>
-              <div class="vline"></div>
-              <div style="flex:1;min-width:0;"><div class="race-name">GP da Espanha</div><div class="race-circuit"><i class="bi bi-geo-alt" style="font-size:.65rem;"></i> Circuit de Catalunya</div></div>
-              <div class="race-date"><div class="race-date-val">01 Jun</div><div class="race-date-cc">🇪🇸 ESP</div></div>
-            </a>
-            <a href="#" class="race-card">
-              <div><div class="race-round">07</div><div class="race-round-lbl">Round</div></div>
-              <div class="vline"></div>
-              <div style="flex:1;min-width:0;"><div class="race-name">GP do Canadá</div><div class="race-circuit"><i class="bi bi-geo-alt" style="font-size:.65rem;"></i> Gilles Villeneuve</div></div>
-              <div class="race-date"><div class="race-date-val">15 Jun</div><div class="race-date-cc">🇨🇦 CAN</div></div>
-            </a>
-            <a href="#" class="race-card">
-              <div><div class="race-round">08</div><div class="race-round-lbl">Round</div></div>
-              <div class="vline"></div>
-              <div style="flex:1;min-width:0;"><div class="race-name">GP da Áustria</div><div class="race-circuit"><i class="bi bi-geo-alt" style="font-size:.65rem;"></i> Red Bull Ring</div></div>
-              <div class="race-date"><div class="race-date-val">29 Jun</div><div class="race-date-cc">🇦🇹 AUT</div></div>
-            </a>
-            <a href="#" class="race-card" style="border-color:var(--f1-red);">
-              <div><div class="race-round" style="color:var(--warning);">09</div><div class="race-round-lbl">Round</div></div>
-              <div class="vline"></div>
-              <div style="flex:1;min-width:0;"><div class="race-name">GP da Grã-Bretanha</div><div class="race-circuit"><i class="bi bi-geo-alt" style="font-size:.65rem;"></i> Silverstone Circuit</div></div>
-              <div class="race-date"><div class="race-date-val">06 Jul</div><div class="race-date-cc">🇬🇧 GBR</div></div>
-            </a>
-          </div>
-        </div>
-
-      </div>
-
-      <hr class="f1-divider">
-
-      <!-- DESIGN SYSTEM -->
-      <div class="section-head mb-4">
-        <div class="section-title">Design System</div>
-        <span style="font-size:.68rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--f1-red);">Paleta & Componentes</span>
-      </div>
-
-      <div class="row g-3 mb-4">
-        <div class="col-md-6 col-lg-4">
-          <div class="ds-card">
-            <div class="ds-card-title">Botões</div>
-            <div class="d-flex flex-wrap gap-2">
-              <button class="btn-red"><i class="bi bi-flag-fill"></i> Primary</button>
-              <button class="btn-success-f1"><i class="bi bi-check-lg"></i> Success</button>
-              <button class="btn-warning-f1"><i class="bi bi-exclamation"></i> Warning</button>
-              <button class="btn-outline-f1">Cancel</button>
-              <button class="btn-ghost">Ghost</button>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-6 col-lg-4">
-          <div class="ds-card">
-            <div class="ds-card-title">Badges</div>
-            <div class="d-flex flex-wrap gap-2">
-              <span class="f1-badge badge-red">F1 Red</span>
-              <span class="f1-badge badge-teal">Teal</span>
-              <span class="f1-badge badge-orange">Orange</span>
-              <span class="f1-badge badge-blue">Blue</span>
-              <span class="f1-badge badge-neutral">Neutral</span>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-6 col-lg-4">
-          <div class="ds-card">
-            <div class="ds-card-title">Inputs</div>
-            <div class="mb-2">
-              <label class="f1-lbl">Número do piloto</label>
-              <input class="f1-input" type="text" placeholder="Ex: 44">
-            </div>
-            <div>
-              <label class="f1-lbl">Escuderia</label>
-              <input class="f1-input" type="text" placeholder="Ex: Mercedes-AMG">
-            </div>
-          </div>
-        </div>
-        <div class="col-12">
-          <div class="ds-card">
-            <div class="ds-card-title">Alertas</div>
-            <div class="f1-alert alert-success"><i class="bi bi-check-circle-fill ai"></i><span>Resultado registrado com sucesso — GP do Bahrein, Round 01.</span></div>
-            <div class="f1-alert alert-warning"><i class="bi bi-exclamation-triangle-fill ai"></i><span>Corrida incompleta — dados de volta rápida não cadastrados.</span></div>
-            <div class="f1-alert alert-danger"><i class="bi bi-x-circle-fill ai"></i><span>Falha ao excluir piloto — existem resultados vinculados.</span></div>
-            <div class="f1-alert alert-info" style="margin-bottom:0;"><i class="bi bi-info-circle-fill ai"></i><span>Calendário 2025 disponível — 24 grandes prêmios confirmados.</span></div>
-          </div>
-        </div>
-      </div>
-
-      <!-- AUTH DEMO -->
-      <div class="demo-strip mb-2">
-        <i class="bi bi-lightning-charge-fill"></i>
-        <span>Demo Auth:</span>
-        <button class="btn-red" id="demoLoginBtn" style="font-size:.7rem;padding:.3rem .8rem;"><i class="bi bi-person-check"></i> Simular login</button>
-        <button class="btn-outline-f1 d-none" id="demoLogoutBtn" style="font-size:.7rem;padding:.3rem .8rem;"><i class="bi bi-person-x"></i> Simular logout</button>
-        <span style="color:var(--text-muted);font-size:.7rem;margin-left:.5rem;">Alterne para ver o dropdown de usuário na navbar</span>
-      </div>
-
+{% block content %}
+<div class="row g-3 mb-5">
+  <div class="col-6 col-lg-3">
+    <div class="stat-card">
+      <div class="stat-icon"><i class="bi bi-person-badge-fill"></i></div>
+      <div class="stat-val">20</div>
+      <div class="stat-lbl">Pilotos</div>
+      <div class="stat-delta text-teal"><i class="bi bi-arrow-up"></i> +2 esta temporada</div>
     </div>
-  </main>
+  </div>
+  <div class="col-6 col-lg-3">
+    <div class="stat-card">
+      <div class="stat-icon"><i class="bi bi-shield-fill"></i></div>
+      <div class="stat-val">10</div>
+      <div class="stat-lbl">Escuderias</div>
+      <div class="stat-delta" style="color:var(--text-muted);">Grade completa</div>
+    </div>
+  </div>
+  <div class="col-6 col-lg-3">
+    <div class="stat-card">
+      <div class="stat-icon"><i class="bi bi-flag-fill"></i></div>
+      <div class="stat-val">24</div>
+      <div class="stat-lbl">Corridas</div>
+      <div class="stat-delta" style="color:var(--warning);"><i class="bi bi-circle-fill" style="font-size:.5rem;"></i> 18 restantes</div>
+    </div>
+  </div>
+  <div class="col-6 col-lg-3">
+    <div class="stat-card">
+      <div class="stat-icon"><i class="bi bi-map-fill"></i></div>
+      <div class="stat-val">21</div>
+      <div class="stat-lbl">Circuitos</div>
+      <div class="stat-delta text-teal"><i class="bi bi-plus"></i> 1 novo</div>
+    </div>
+  </div>
+</div>
 
-  <!-- FOOTER -->
-  <footer class="f1-footer">
-    <div class="container">
-      <div class="row g-4 mb-0">
-        <div class="col-12 col-md-4">
-          <div class="footer-brand">
-            tututuru
-          </div>
-          <p class="footer-desc">Sistema de gerenciamento para o universo da Fórmula 1. Velocidade e precisão em cada dado.</p>
-        </div>
-        <div class="col-6 col-md-2">
-          <div class="footer-heading">Cadastros</div>
-          <ul class="footer-links">
-            <li><a href="#">Pilotos</a></li>
-            <li><a href="#">Escuderias</a></li>
-            <li><a href="#">Carros</a></li>
-            <li><a href="#">Circuitos</a></li>
-            <li><a href="#">Corridas</a></li>
-            <li><a href="#">Resultados</a></li>
-          </ul>
-        </div>
-        <div class="col-6 col-md-2">
-          <div class="footer-heading">Temporadas</div>
-          <ul class="footer-links">
-            <li><a href="#">2025</a></li>
-            <li><a href="#">2024</a></li>
-            <li><a href="#">2023</a></li>
-            <li><a href="#">Histórico</a></li>
-          </ul>
-        </div>
-        <div class="col-12 col-md-4">
-          <div class="footer-heading">Navegação</div>
-          <ul class="footer-links">
-            <li><a href="#">Estatísticas</a></li>
-            <li><a href="#">Classificação</a></li>
-            <li><a href="#">API Docs</a></li>
-            <li><a href="#">Suporte</a></li>
-          </ul>
-        </div>
-      </div>
-      <div class="footer-bottom">
-        <span class="footer-copy">© 2025 tututuru — Template Bootstrap 5</span>
-        <div class="d-flex align-items-center gap-2">
-          <span class="f1-badge badge-neutral" style="font-size:.6rem;">Bootstrap 5.3</span>
-          <span class="f1-badge badge-neutral" style="font-size:.6rem;">jQuery 3.7</span>
-          <span class="f1-badge badge-red" style="font-size:.6rem;">Dark Mode</span>
-        </div>
+<div class="row g-4 mb-5">
+  <div class="col-lg-8">
+    <div class="section-head">
+      <div class="section-title">Classificação — Pilotos</div>
+      <div class="d-flex gap-2">
+        <button class="btn-outline-f1"><i class="bi bi-funnel"></i> Filtrar</button>
+        <button class="btn-red"><i class="bi bi-plus-lg"></i> Novo</button>
       </div>
     </div>
-  </footer>
+    <div class="f1-table-wrap">
+      <div class="f1-table-header">
+        <span class="f1-table-title"><i class="bi bi-trophy-fill text-red"></i> WDC 2025</span>
+        <span class="f1-badge badge-red">Ao vivo</span>
+      </div>
+      <div style="overflow-x:auto;">
+        <table class="f1-table">
+          <thead>
+            <tr>
+              <th style="width:50px;">Pos</th>
+              <th>Piloto</th>
+              <th>Escuderia</th>
+              <th>Nac.</th>
+              <th style="text-align:right;">Pontos</th>
+              <th style="text-align:center;width:110px;">Ações</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><div class="pos-badge gold">1</div></td>
+              <td class="bold">Max Verstappen</td>
+              <td><span class="team-dot" style="background:#1E40FF;"></span><span class="f1-badge badge-blue">Red Bull</span></td>
+              <td>🇳🇱</td>
+              <td class="pts" style="text-align:right;">395</td>
+              <td style="text-align:center;"><div class="d-flex gap-1 justify-content-center"><a href="#" class="act-btn"><i class="bi bi-eye"></i></a><a href="#" class="act-btn"><i class="bi bi-pencil"></i></a><a href="#" class="act-btn danger"><i class="bi bi-trash"></i></a></div></td>
+            </tr>
+            <tr>
+              <td><div class="pos-badge silver">2</div></td>
+              <td class="bold">Lewis Hamilton</td>
+              <td><span class="team-dot" style="background:#E10600;"></span><span class="f1-badge badge-red">Ferrari</span></td>
+              <td>🇬🇧</td>
+              <td class="pts" style="text-align:right;">340</td>
+              <td style="text-align:center;"><div class="d-flex gap-1 justify-content-center"><a href="#" class="act-btn"><i class="bi bi-eye"></i></a><a href="#" class="act-btn"><i class="bi bi-pencil"></i></a><a href="#" class="act-btn danger"><i class="bi bi-trash"></i></a></div></td>
+            </tr>
+            <tr>
+              <td><div class="pos-badge bronze">3</div></td>
+              <td class="bold">Lando Norris</td>
+              <td><span class="team-dot" style="background:#FF8000;"></span><span class="f1-badge badge-orange">McLaren</span></td>
+              <td>🇬🇧</td>
+              <td class="pts" style="text-align:right;">310</td>
+              <td style="text-align:center;"><div class="d-flex gap-1 justify-content-center"><a href="#" class="act-btn"><i class="bi bi-eye"></i></a><a href="#" class="act-btn"><i class="bi bi-pencil"></i></a><a href="#" class="act-btn danger"><i class="bi bi-trash"></i></a></div></td>
+            </tr>
+            <tr>
+              <td><div class="pos-badge">4</div></td>
+              <td class="bold">Charles Leclerc</td>
+              <td><span class="team-dot" style="background:#E10600;"></span><span class="f1-badge badge-red">Ferrari</span></td>
+              <td>🇲🇨</td>
+              <td class="pts" style="text-align:right;">280</td>
+              <td style="text-align:center;"><div class="d-flex gap-1 justify-content-center"><a href="#" class="act-btn"><i class="bi bi-eye"></i></a><a href="#" class="act-btn"><i class="bi bi-pencil"></i></a><a href="#" class="act-btn danger"><i class="bi bi-trash"></i></a></div></td>
+            </tr>
+            <tr>
+              <td><div class="pos-badge">5</div></td>
+              <td class="bold">Carlos Sainz</td>
+              <td><span class="team-dot" style="background:#00D2BE;"></span><span class="f1-badge badge-teal">Williams</span></td>
+              <td>🇪🇸</td>
+              <td class="pts" style="text-align:right;">241</td>
+              <td style="text-align:center;"><div class="d-flex gap-1 justify-content-center"><a href="#" class="act-btn"><i class="bi bi-eye"></i></a><a href="#" class="act-btn"><i class="bi bi-pencil"></i></a><a href="#" class="act-btn danger"><i class="bi bi-trash"></i></a></div></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js"></script>
-  <script>
-    $(function () {
-      $('#navToggler').on('click', function () {
-        $('#navLinks').toggleClass('open');
-        $(this).find('i').toggleClass('bi-list bi-x-lg');
-      });
+  <div class="col-lg-4">
+    <div class="section-head">
+      <div class="section-title">Calendário</div>
+    </div>
+    <div class="d-flex flex-column gap-2">
+      <a href="#" class="race-card">
+        <div><div class="race-round">06</div><div class="race-round-lbl">Round</div></div>
+        <div class="vline"></div>
+        <div style="flex:1;min-width:0;"><div class="race-name">GP da Espanha</div><div class="race-circuit"><i class="bi bi-geo-alt" style="font-size:.65rem;"></i> Circuit de Catalunya</div></div>
+        <div class="race-date"><div class="race-date-val">01 Jun</div><div class="race-date-cc">🇪🇸 ESP</div></div>
+      </a>
+      <a href="#" class="race-card">
+        <div><div class="race-round">07</div><div class="race-round-lbl">Round</div></div>
+        <div class="vline"></div>
+        <div style="flex:1;min-width:0;"><div class="race-name">GP do Canadá</div><div class="race-circuit"><i class="bi bi-geo-alt" style="font-size:.65rem;"></i> Gilles Villeneuve</div></div>
+        <div class="race-date"><div class="race-date-val">15 Jun</div><div class="race-date-cc">🇨🇦 CAN</div></div>
+      </a>
+      <a href="#" class="race-card">
+        <div><div class="race-round">08</div><div class="race-round-lbl">Round</div></div>
+        <div class="vline"></div>
+        <div style="flex:1;min-width:0;"><div class="race-name">GP da Áustria</div><div class="race-circuit"><i class="bi bi-geo-alt" style="font-size:.65rem;"></i> Red Bull Ring</div></div>
+        <div class="race-date"><div class="race-date-val">29 Jun</div><div class="race-date-cc">🇦🇹 AUT</div></div>
+      </a>
+      <a href="#" class="race-card" style="border-color:var(--f1-red);">
+        <div><div class="race-round" style="color:var(--warning);">09</div><div class="race-round-lbl">Round</div></div>
+        <div class="vline"></div>
+        <div style="flex:1;min-width:0;"><div class="race-name">GP da Grã-Bretanha</div><div class="race-circuit"><i class="bi bi-geo-alt" style="font-size:.65rem;"></i> Silverstone Circuit</div></div>
+        <div class="race-date"><div class="race-date-val">06 Jul</div><div class="race-date-cc">🇬🇧 GBR</div></div>
+      </a>
+    </div>
+  </div>
+</div>
 
-      function setAuth(on) {
-        if (on) {
-          $('#authGuest').addClass('d-none').removeClass('d-flex');
-          $('#authUser').removeClass('d-none').addClass('d-flex');
-          $('#demoLoginBtn, #demoLoginTrigger').addClass('d-none');
-          $('#demoLogoutBtn').removeClass('d-none');
-        } else {
-          $('#authUser').addClass('d-none').removeClass('d-flex');
-          $('#authGuest').removeClass('d-none').addClass('d-flex');
-          $('#demoLoginBtn, #demoLoginTrigger').removeClass('d-none');
-          $('#demoLogoutBtn').addClass('d-none');
-        }
-      }
+<hr class="f1-divider">
 
-      $('#demoLoginBtn, #demoLoginTrigger').on('click', function(e){ e.preventDefault(); setAuth(true); });
-      $('#demoLogoutBtn, #logoutBtn').on('click', function(e){ e.preventDefault(); setAuth(false); });
-    });
-  </script>
-</body>
-</html>
+<div class="section-head mb-4">
+  <div class="section-title">Design System</div>
+  <span style="font-size:.68rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--f1-red);">Paleta & Componentes</span>
+</div>
+
+<div class="row g-3 mb-4">
+  <div class="col-md-6 col-lg-4">
+    <div class="ds-card">
+      <div class="ds-card-title">Botões</div>
+      <div class="d-flex flex-wrap gap-2">
+        <button class="btn-red"><i class="bi bi-flag-fill"></i> Primary</button>
+        <button class="btn-success-f1"><i class="bi bi-check-lg"></i> Success</button>
+        <button class="btn-warning-f1"><i class="bi bi-exclamation"></i> Warning</button>
+        <button class="btn-outline-f1">Cancel</button>
+        <button class="btn-ghost">Ghost</button>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-6 col-lg-4">
+    <div class="ds-card">
+      <div class="ds-card-title">Badges</div>
+      <div class="d-flex flex-wrap gap-2">
+        <span class="f1-badge badge-red">F1 Red</span>
+        <span class="f1-badge badge-teal">Teal</span>
+        <span class="f1-badge badge-orange">Orange</span>
+        <span class="f1-badge badge-blue">Blue</span>
+        <span class="f1-badge badge-neutral">Neutral</span>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-6 col-lg-4">
+    <div class="ds-card">
+      <div class="ds-card-title">Inputs</div>
+      <div class="mb-2">
+        <label class="f1-lbl">Número do piloto</label>
+        <input class="f1-input" type="text" placeholder="Ex: 44">
+      </div>
+      <div>
+        <label class="f1-lbl">Escuderia</label>
+        <input class="f1-input" type="text" placeholder="Ex: Mercedes-AMG">
+      </div>
+    </div>
+  </div>
+  <div class="col-12">
+    <div class="ds-card">
+      <div class="ds-card-title">Alertas</div>
+      <div class="f1-alert alert-success"><i class="bi bi-check-circle-fill ai"></i><span>Resultado registrado com sucesso — GP do Bahrein, Round 01.</span></div>
+      <div class="f1-alert alert-warning"><i class="bi bi-exclamation-triangle-fill ai"></i><span>Corrida incompleta — dados de volta rápida não cadastrados.</span></div>
+      <div class="f1-alert alert-danger"><i class="bi bi-x-circle-fill ai"></i><span>Falha ao excluir piloto — existem resultados vinculados.</span></div>
+      <div class="f1-alert alert-info" style="margin-bottom:0;"><i class="bi bi-info-circle-fill ai"></i><span>Calendário 2025 disponível — 24 grandes prêmios confirmados.</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="demo-strip mb-2">
+  <i class="bi bi-lightning-charge-fill"></i>
+  <span>Demo Auth:</span>
+  <button class="btn-red" id="demoLoginBtn" style="font-size:.7rem;padding:.3rem .8rem;"><i class="bi bi-person-check"></i> Simular login</button>
+  <button class="btn-outline-f1 d-none" id="demoLogoutBtn" style="font-size:.7rem;padding:.3rem .8rem;"><i class="bi bi-person-x"></i> Simular logout</button>
+  <span style="color:var(--text-muted);font-size:.7rem;margin-left:.5rem;">Alterne para ver o dropdown de usuário na navbar</span>
+</div>
+{% endblock %}

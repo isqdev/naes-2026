@@ -1,10 +1,14 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Contato</title>
-</head>
-<body>
-    <h3>Página de contato do Django</h3>
-</body>
-</html>
+{% extends "base.html" %}
+
+{% block title %}Contato{% endblock %}
+
+{% block content %}
+<div class="section-head">
+  <div class="section-title">Contato</div>
+</div>
+
+<div class="ds-card">
+  <div class="ds-card-title">Fale com a equipe</div>
+  <p class="mb-0" style="color:var(--text-secondary);">Pagina de contato do Django. Em breve adicionaremos formulario e canais oficiais.</p>
+</div>
+{% endblock %}

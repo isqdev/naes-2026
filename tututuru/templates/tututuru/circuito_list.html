@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block title %}Circuitos{% endblock %}
+
+{% block content %}
+<div class="section-head">
+  <div class="section-title">Circuitos</div>
+  <a class="btn-red" href="{% url 'tututuru:circuito-criar' %}"><i class="bi bi-plus-lg"></i> Adicionar</a>
+</div>
+
+<div class="f1-table-wrap">
+  <div class="f1-table-header">
+    <span class="f1-table-title"><i class="bi bi-geo-alt-fill text-red"></i> Circuitos</span>
+  </div>
+  <div style="overflow-x:auto;">
+    <table class="f1-table">
+      <thead>
+        <tr>
+          <th>Nome</th>
+          <th>Pais</th>
+          <th>Cidade</th>
+          <th>Extensao (km)</th>
+          <th>Curvas</th>
+          <th style="text-align:center;width:120px;">Acoes</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for circuito in circuitos %}
+        <tr>
+          <td class="bold">{{ circuito.nome }}</td>
+          <td>{{ circuito.pais }}</td>
+          <td>{{ circuito.cidade }}</td>
+          <td>{{ circuito.extensao_km }}</td>
+          <td>{{ circuito.numero_curvas }}</td>
+          <td style="text-align:center;">
+            <div class="d-flex gap-1 justify-content-center">
+              <a href="{% url 'tututuru:circuito-detalhe' circuito.pk %}" class="act-btn"><i class="bi bi-eye"></i></a>
+              <a href="{% url 'tututuru:circuito-editar' circuito.pk %}" class="act-btn"><i class="bi bi-pencil"></i></a>
+              <a href="{% url 'tututuru:circuito-excluir' circuito.pk %}" class="act-btn danger"><i class="bi bi-trash"></i></a>
+            </div>
+          </td>
+        </tr>
+        {% empty %}
+        <tr>
+          <td colspan="6" style="text-align:center;">Nenhum circuito cadastrado.</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+{% include "tututuru/paginacao.html" with page_obj=page_obj %}
+{% endblock %}
+

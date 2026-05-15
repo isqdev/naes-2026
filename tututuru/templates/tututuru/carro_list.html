@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block title %}Carros{% endblock %}
+
+{% block content %}
+<div class="section-head">
+  <div class="section-title">Carros</div>
+  <a class="btn-red" href="{% url 'tututuru:carro-criar' %}"><i class="bi bi-plus-lg"></i> Adicionar</a>
+</div>
+
+<div class="f1-table-wrap">
+  <div class="f1-table-header">
+    <span class="f1-table-title"><i class="bi bi-car-front-fill text-red"></i> Carros</span>
+  </div>
+  <div style="overflow-x:auto;">
+    <table class="f1-table">
+      <thead>
+        <tr>
+          <th>Modelo</th>
+          <th>Equipe</th>
+          <th>Piloto</th>
+          <th>Ano</th>
+          <th>Numero</th>
+          <th style="text-align:center;width:120px;">Acoes</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for carro in carros %}
+        <tr>
+          <td class="bold">{{ carro.modelo }}</td>
+          <td>{{ carro.equipe.nome }}</td>
+          <td>{{ carro.piloto.nome|default:"-" }}</td>
+          <td>{{ carro.ano }}</td>
+          <td>{{ carro.numero_carro }}</td>
+          <td style="text-align:center;">
+            <div class="d-flex gap-1 justify-content-center">
+              <a href="{% url 'tututuru:carro-detalhe' carro.pk %}" class="act-btn"><i class="bi bi-eye"></i></a>
+              <a href="{% url 'tututuru:carro-editar' carro.pk %}" class="act-btn"><i class="bi bi-pencil"></i></a>
+              <a href="{% url 'tututuru:carro-excluir' carro.pk %}" class="act-btn danger"><i class="bi bi-trash"></i></a>
+            </div>
+          </td>
+        </tr>
+        {% empty %}
+        <tr>
+          <td colspan="6" style="text-align:center;">Nenhum carro cadastrado.</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+{% include "tututuru/paginacao.html" with page_obj=page_obj %}
+{% endblock %}
+

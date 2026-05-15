@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block title %}Corridas{% endblock %}
+
+{% block content %}
+<div class="section-head">
+  <div class="section-title">Corridas</div>
+  <a class="btn-red" href="{% url 'tututuru:corrida-criar' %}"><i class="bi bi-plus-lg"></i> Adicionar</a>
+</div>
+
+<div class="f1-table-wrap">
+  <div class="f1-table-header">
+    <span class="f1-table-title"><i class="bi bi-flag-fill text-red"></i> Corridas</span>
+  </div>
+  <div style="overflow-x:auto;">
+    <table class="f1-table">
+      <thead>
+        <tr>
+          <th>Nome</th>
+          <th>Circuito</th>
+          <th>Data</th>
+          <th>Temporada</th>
+          <th>Voltas</th>
+          <th style="text-align:center;width:120px;">Acoes</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for corrida in corridas %}
+        <tr>
+          <td class="bold">{{ corrida.nome }}</td>
+          <td>{{ corrida.circuito.nome }}</td>
+          <td>{{ corrida.data }}</td>
+          <td>{{ corrida.temporada }}</td>
+          <td>{{ corrida.total_voltas }}</td>
+          <td style="text-align:center;">
+            <div class="d-flex gap-1 justify-content-center">
+              <a href="{% url 'tututuru:corrida-detalhe' corrida.pk %}" class="act-btn"><i class="bi bi-eye"></i></a>
+              <a href="{% url 'tututuru:corrida-editar' corrida.pk %}" class="act-btn"><i class="bi bi-pencil"></i></a>
+              <a href="{% url 'tututuru:corrida-excluir' corrida.pk %}" class="act-btn danger"><i class="bi bi-trash"></i></a>
+            </div>
+          </td>
+        </tr>
+        {% empty %}
+        <tr>
+          <td colspan="6" style="text-align:center;">Nenhuma corrida cadastrada.</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+{% include "tututuru/paginacao.html" with page_obj=page_obj %}
+{% endblock %}
+

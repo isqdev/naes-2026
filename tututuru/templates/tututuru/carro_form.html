@@ -1,12 +1,12 @@
 {% extends "base.html" %}
 {% load crispy_forms_tags %}
 
-{% block title %}Equipe{% endblock %}
+{% block title %}Carro{% endblock %}
 
 {% block content %}
 <div class="section-head">
   <div class="section-title">{{ titulo }}</div>
-  <a class="btn-outline-f1" href="{% url 'tututuru:equipe-lista' %}">Cancelar</a>
+  <a class="btn-outline-f1" href="{% url 'tututuru:carro-lista' %}">Cancelar</a>
 </div>
 
 <div class="ds-card">
@@ -16,8 +16,9 @@
     {% crispy form %}
     <div class="d-flex gap-2">
       <button type="submit" class="btn-red"><i class="bi bi-check-lg"></i> Salvar</button>
-      <a href="{% url 'tututuru:equipe-lista' %}" class="btn-outline-f1">Cancelar</a>
+      <a href="{% url 'tututuru:carro-lista' %}" class="btn-outline-f1">Cancelar</a>
     </div>
   </form>
 </div>
 {% endblock %}
+

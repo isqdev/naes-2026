@@ -1,19 +1,20 @@
 {% extends "base.html" %}
 
-{% block title %}Excluir Equipe{% endblock %}
+{% block title %}Excluir Circuito{% endblock %}
 
 {% block content %}
 <div class="section-head">
-  <div class="section-title">Excluir Equipe</div>
+  <div class="section-title">Excluir Circuito</div>
 </div>
 
 <div class="ds-card">
   <div class="ds-card-title">Confirmacao</div>
-  <p>Tem certeza que deseja excluir a equipe <strong>{{ object.nome }}</strong>?</p>
+  <p>Tem certeza que deseja excluir o circuito <strong>{{ object.nome }}</strong>?</p>
   <form method="post" class="d-flex gap-2">
     {% csrf_token %}
     <button type="submit" class="btn-red"><i class="bi bi-trash"></i> Confirmar exclusao</button>
-    <a href="{% url 'tututuru:equipe-lista' %}" class="btn-outline-f1">Cancelar</a>
+    <a href="{% url 'tututuru:circuito-lista' %}" class="btn-outline-f1">Cancelar</a>
   </form>
 </div>
 {% endblock %}
+

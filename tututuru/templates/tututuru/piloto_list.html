@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block title %}Pilotos{% endblock %}
+
+{% block content %}
+<div class="section-head">
+  <div class="section-title">Pilotos</div>
+  <a class="btn-red" href="{% url 'tututuru:piloto-criar' %}"><i class="bi bi-plus-lg"></i> Adicionar</a>
+</div>
+
+<div class="f1-table-wrap">
+  <div class="f1-table-header">
+    <span class="f1-table-title"><i class="bi bi-person-badge-fill text-red"></i> Pilotos</span>
+  </div>
+  <div style="overflow-x:auto;">
+    <table class="f1-table">
+      <thead>
+        <tr>
+          <th>Nome</th>
+          <th>Equipe</th>
+          <th>Nacionalidade</th>
+          <th>Numero</th>
+          <th style="text-align:center;width:120px;">Acoes</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for piloto in pilotos %}
+        <tr>
+          <td class="bold">{{ piloto.nome }}</td>
+          <td>{{ piloto.equipe.nome }}</td>
+          <td>{{ piloto.nacionalidade }}</td>
+          <td>{{ piloto.numero_largada }}</td>
+          <td style="text-align:center;">
+            <div class="d-flex gap-1 justify-content-center">
+              <a href="{% url 'tututuru:piloto-detalhe' piloto.pk %}" class="act-btn"><i class="bi bi-eye"></i></a>
+              <a href="{% url 'tututuru:piloto-editar' piloto.pk %}" class="act-btn"><i class="bi bi-pencil"></i></a>
+              <a href="{% url 'tututuru:piloto-excluir' piloto.pk %}" class="act-btn danger"><i class="bi bi-trash"></i></a>
+            </div>
+          </td>
+        </tr>
+        {% empty %}
+        <tr>
+          <td colspan="5" style="text-align:center;">Nenhum piloto cadastrado.</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+{% include "tututuru/paginacao.html" with page_obj=page_obj %}
+{% endblock %}
+

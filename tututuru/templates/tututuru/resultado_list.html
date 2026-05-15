@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block title %}Resultados{% endblock %}
+
+{% block content %}
+<div class="section-head">
+  <div class="section-title">Resultados</div>
+  <a class="btn-red" href="{% url 'tututuru:resultado-criar' %}"><i class="bi bi-plus-lg"></i> Adicionar</a>
+</div>
+
+<div class="f1-table-wrap">
+  <div class="f1-table-header">
+    <span class="f1-table-title"><i class="bi bi-trophy-fill text-red"></i> Resultados</span>
+  </div>
+  <div style="overflow-x:auto;">
+    <table class="f1-table">
+      <thead>
+        <tr>
+          <th>Corrida</th>
+          <th>Piloto</th>
+          <th>Carro</th>
+          <th>Final</th>
+          <th>Pontos</th>
+          <th style="text-align:center;width:120px;">Acoes</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for resultado in resultados %}
+        <tr>
+          <td class="bold">{{ resultado.corrida.nome }}</td>
+          <td>{{ resultado.piloto.nome }}</td>
+          <td>{{ resultado.carro.modelo }}</td>
+          <td>{{ resultado.posicao_final }}</td>
+          <td>{{ resultado.pontos_obtidos }}</td>
+          <td style="text-align:center;">
+            <div class="d-flex gap-1 justify-content-center">
+              <a href="{% url 'tututuru:resultado-detalhe' resultado.pk %}" class="act-btn"><i class="bi bi-eye"></i></a>
+              <a href="{% url 'tututuru:resultado-editar' resultado.pk %}" class="act-btn"><i class="bi bi-pencil"></i></a>
+              <a href="{% url 'tututuru:resultado-excluir' resultado.pk %}" class="act-btn danger"><i class="bi bi-trash"></i></a>
+            </div>
+          </td>
+        </tr>
+        {% empty %}
+        <tr>
+          <td colspan="6" style="text-align:center;">Nenhum resultado cadastrado.</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+{% include "tututuru/paginacao.html" with page_obj=page_obj %}
+{% endblock %}
+
