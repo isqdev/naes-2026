@@ -2,5 +2,12 @@
 .venv
 db.sqlite3
 uv.lock
-__pycache__/
+**/__pycache__/
 *.pyc
+
+# Google Cloud / App Engine (arquivos locais e de deploy)
+.gcloud/
+.gcloudignore
+.cloudignore
+app.yaml
+static_gcloud/

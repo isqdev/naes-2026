@@ -1,6 +1,21 @@
 from django.db import models
+from django.conf import settings
 
-class Equipe(models.Model):
+
+class UsuarioMixin(models.Model):
+    usuario = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="%(app_label)s_%(class)s_registros",
+        null=True,
+        blank=True,
+    )
+
+    class Meta:
+        abstract = True
+
+
+class Equipe(UsuarioMixin):
     nome = models.CharField(max_length=100)
     pais_origem = models.CharField(max_length=80)
     ano_fundacao = models.PositiveIntegerField()
@@ -15,7 +30,7 @@ class Equipe(models.Model):
         return self.nome
 
 
-class Piloto(models.Model):
+class Piloto(UsuarioMixin):
     equipe = models.ForeignKey(Equipe, on_delete=models.PROTECT, related_name="pilotos")
     nome = models.CharField(max_length=100)
     nacionalidade = models.CharField(max_length=60)
@@ -31,7 +46,7 @@ class Piloto(models.Model):
         return self.nome
 
 
-class Carro(models.Model):
+class Carro(UsuarioMixin):
     equipe = models.ForeignKey(Equipe, on_delete=models.PROTECT, related_name="carros")
     piloto = models.OneToOneField(Piloto, on_delete=models.SET_NULL, null=True, blank=True, related_name="carro")
     modelo = models.CharField(max_length=80)
@@ -48,7 +63,7 @@ class Carro(models.Model):
         return f"{self.modelo} #{self.numero_carro}"
 
 
-class Circuito(models.Model):
+class Circuito(UsuarioMixin):
     nome = models.CharField(max_length=120)
     pais = models.CharField(max_length=60)
     cidade = models.CharField(max_length=80)
@@ -64,7 +79,7 @@ class Circuito(models.Model):
         return self.nome
 
 
-class Corrida(models.Model):
+class Corrida(UsuarioMixin):
     circuito = models.ForeignKey(Circuito, on_delete=models.PROTECT, related_name="corridas")
     nome = models.CharField(max_length=120)
     data = models.DateField()
@@ -80,7 +95,7 @@ class Corrida(models.Model):
         return f"{self.nome} {self.temporada}"
 
 
-class ResultadoCorrida(models.Model):
+class ResultadoCorrida(UsuarioMixin):
     corrida = models.ForeignKey(Corrida, on_delete=models.CASCADE, related_name="resultados")
     piloto = models.ForeignKey(Piloto, on_delete=models.PROTECT, related_name="resultados")
     carro = models.ForeignKey(Carro, on_delete=models.PROTECT, related_name="resultados")

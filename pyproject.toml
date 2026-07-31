@@ -14,5 +14,7 @@ dependencies = [
     "django-filter==25.1",
     "psycopg2==2.9.10",
     "python-dateutil==2.9.0.post0",
-    "crispy-bootstrap5==2025.6"
+    "crispy-bootstrap5==2025.6",
+    "psycopg2-binary==2.9.10",
+    "gunicorn"
 ]

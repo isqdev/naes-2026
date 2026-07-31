@@ -419,29 +419,31 @@
 
         <button class="f1-toggler" id="navToggler"><i class="bi bi-list"></i></button>
 
-        <!-- Guest auth -->
-        <div class="f1-nav-auth" id="authGuest">
-          <a href="#" class="btn-ghost"><i class="bi bi-person"></i> Entrar</a>
-          <button class="btn-red" id="demoLoginTrigger"><i class="bi bi-person-plus"></i> Cadastrar</button>
-        </div>
-
-        <!-- User auth -->
-        <div class="f1-nav-auth d-none" id="authUser" style="margin-left:1.5rem;">
+        {% if request.user.is_authenticated %}
+        <div class="f1-nav-auth" style="margin-left:1.5rem;">
           <div class="dropdown">
             <button class="f1-user-btn dropdown-toggle" data-bs-toggle="dropdown">
-              <div class="f1-avatar">LH</div>
-              <span>Lewis H.</span>
+              <div class="f1-avatar">{{ request.user.username|slice:":2"|upper }}</div>
+              <span>{{ request.user.get_short_name|default:request.user.username }}</span>
             </button>
             <ul class="dropdown-menu user-dropdown dropdown-menu-end">
               <li><div style="padding:.6rem 1.2rem .2rem;font-size:.65rem;letter-spacing:.12em;text-transform:uppercase;color:var(--text-muted);font-weight:700;">Conta</div></li>
-              <li><a class="dropdown-item" href="#"><i class="bi bi-person" style="width:16px;"></i>Perfil</a></li>
-              <li><a class="dropdown-item" href="#"><i class="bi bi-gear" style="width:16px;"></i>Configuracoes</a></li>
-              <li><a class="dropdown-item" href="#"><i class="bi bi-bell" style="width:16px;"></i>Notificacoes <span class="f1-badge badge-red ms-auto">3</span></a></li>
+              <li><a class="dropdown-item" href="{% url 'password_change' %}"><i class="bi bi-key" style="width:16px;"></i>Alterar senha</a></li>
               <li><hr class="dropdown-divider"></li>
-              <li><a class="dropdown-item logout" href="#" id="logoutBtn"><i class="bi bi-box-arrow-right" style="width:16px;"></i>Sair</a></li>
+              <li>
+                <form method="post" action="{% url 'logout' %}">
+                  {% csrf_token %}
+                  <button class="dropdown-item logout" type="submit"><i class="bi bi-box-arrow-right" style="width:16px;"></i>Sair</button>
+                </form>
+              </li>
             </ul>
           </div>
         </div>
+        {% else %}
+        <div class="f1-nav-auth">
+          <a href="{% url 'login' %}" class="btn-ghost"><i class="bi bi-person"></i> Entrar</a>
+        </div>
+        {% endif %}
 
       </div>
     </div>
@@ -516,22 +518,6 @@
         $(this).find('i').toggleClass('bi-list bi-x-lg');
       });
 
-      function setAuth(on) {
-        if (on) {
-          $('#authGuest').addClass('d-none').removeClass('d-flex');
-          $('#authUser').removeClass('d-none').addClass('d-flex');
-          $('#demoLoginBtn, #demoLoginTrigger').addClass('d-none');
-          $('#demoLogoutBtn').removeClass('d-none');
-        } else {
-          $('#authUser').addClass('d-none').removeClass('d-flex');
-          $('#authGuest').removeClass('d-none').addClass('d-flex');
-          $('#demoLoginBtn, #demoLoginTrigger').removeClass('d-none');
-          $('#demoLogoutBtn').addClass('d-none');
-        }
-      }
-
-      $('#demoLoginBtn, #demoLoginTrigger').on('click', function(e){ e.preventDefault(); setAuth(true); });
-      $('#demoLogoutBtn, #logoutBtn').on('click', function(e){ e.preventDefault(); setAuth(false); });
     });
   </script>
   {% block extra_js %}{% endblock %}
