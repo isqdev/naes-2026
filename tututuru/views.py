@@ -1,4 +1,5 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
+from braces.views import GroupRequiredMixin
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, DeleteView, DetailView, ListView, UpdateView
 
@@ -26,6 +27,13 @@ class UsuarioCreateMixin(LoginRequiredMixin):
 	def form_valid(self, form):
 		form.instance.usuario = self.request.user
 		return super().form_valid(form)
+
+
+class GerenciadorRequiredMixin(GroupRequiredMixin):
+	"""Exclusões são restritas ao grupo Gerenciadores."""
+
+	group_required = "Gerenciadores"
+	raise_exception = True
 
 
 class EquipeListView(UsuarioQuerysetMixin, ListView):
@@ -67,7 +75,7 @@ class EquipeUpdateView(UsuarioQuerysetMixin, UpdateView):
 	extra_context = {"titulo": "Editar Equipe"}
 
 
-class EquipeDeleteView(UsuarioQuerysetMixin, DeleteView):
+class EquipeDeleteView(GerenciadorRequiredMixin, UsuarioQuerysetMixin, DeleteView):
 	model = Equipe
 	template_name = "tututuru/equipe_confirm_delete.html"
 	success_url = reverse_lazy("tututuru:equipe-lista")
@@ -109,7 +117,7 @@ class PilotoUpdateView(UsuarioQuerysetMixin, UpdateView):
 	extra_context = {"titulo": "Editar Piloto"}
 
 
-class PilotoDeleteView(UsuarioQuerysetMixin, DeleteView):
+class PilotoDeleteView(GerenciadorRequiredMixin, UsuarioQuerysetMixin, DeleteView):
 	model = Piloto
 	template_name = "tututuru/piloto_confirm_delete.html"
 	success_url = reverse_lazy("tututuru:piloto-lista")
@@ -151,7 +159,7 @@ class CarroUpdateView(UsuarioQuerysetMixin, UpdateView):
 	extra_context = {"titulo": "Editar Carro"}
 
 
-class CarroDeleteView(UsuarioQuerysetMixin, DeleteView):
+class CarroDeleteView(GerenciadorRequiredMixin, UsuarioQuerysetMixin, DeleteView):
 	model = Carro
 	template_name = "tututuru/carro_confirm_delete.html"
 	success_url = reverse_lazy("tututuru:carro-lista")
@@ -195,7 +203,7 @@ class CircuitoUpdateView(UsuarioQuerysetMixin, UpdateView):
 	extra_context = {"titulo": "Editar Circuito"}
 
 
-class CircuitoDeleteView(UsuarioQuerysetMixin, DeleteView):
+class CircuitoDeleteView(GerenciadorRequiredMixin, UsuarioQuerysetMixin, DeleteView):
 	model = Circuito
 	template_name = "tututuru/circuito_confirm_delete.html"
 	success_url = reverse_lazy("tututuru:circuito-lista")
@@ -247,7 +255,7 @@ class CorridaUpdateView(UsuarioQuerysetMixin, UpdateView):
 	extra_context = {"titulo": "Editar Corrida"}
 
 
-class CorridaDeleteView(UsuarioQuerysetMixin, DeleteView):
+class CorridaDeleteView(GerenciadorRequiredMixin, UsuarioQuerysetMixin, DeleteView):
 	model = Corrida
 	template_name = "tututuru/corrida_confirm_delete.html"
 	success_url = reverse_lazy("tututuru:corrida-lista")
@@ -289,7 +297,7 @@ class ResultadoCorridaUpdateView(UsuarioQuerysetMixin, UpdateView):
 	extra_context = {"titulo": "Editar Resultado"}
 
 
-class ResultadoCorridaDeleteView(UsuarioQuerysetMixin, DeleteView):
+class ResultadoCorridaDeleteView(GerenciadorRequiredMixin, UsuarioQuerysetMixin, DeleteView):
 	model = ResultadoCorrida
 	template_name = "tututuru/resultado_confirm_delete.html"
 	success_url = reverse_lazy("tututuru:resultado-lista")

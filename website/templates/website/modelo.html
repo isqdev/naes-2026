@@ -30,6 +30,79 @@
 {% endblock %}
 
 {% block content %}
+{% if request.user.is_authenticated %}
+<div class="row g-3 mb-5">
+  <div class="col-6 col-lg-3">
+    <div class="stat-card">
+      <div class="stat-icon"><i class="bi bi-person-badge-fill"></i></div>
+      <div class="stat-val">{{ total_pilotos }}</div>
+      <div class="stat-lbl">Meus pilotos</div>
+    </div>
+  </div>
+  <div class="col-6 col-lg-3">
+    <div class="stat-card">
+      <div class="stat-icon"><i class="bi bi-shield-fill"></i></div>
+      <div class="stat-val">{{ total_equipes }}</div>
+      <div class="stat-lbl">Minhas equipes</div>
+    </div>
+  </div>
+  <div class="col-6 col-lg-3">
+    <div class="stat-card">
+      <div class="stat-icon"><i class="bi bi-flag-fill"></i></div>
+      <div class="stat-val">{{ total_corridas }}</div>
+      <div class="stat-lbl">Minhas corridas</div>
+    </div>
+  </div>
+  <div class="col-6 col-lg-3">
+    <div class="stat-card">
+      <div class="stat-icon"><i class="bi bi-map-fill"></i></div>
+      <div class="stat-val">{{ total_circuitos }}</div>
+      <div class="stat-lbl">Meus circuitos</div>
+    </div>
+  </div>
+</div>
+
+<div class="row g-4 mb-5">
+  <div class="col-lg-7">
+    <div class="section-head">
+      <div class="section-title">Últimos pilotos cadastrados</div>
+      <a class="btn-outline-f1" href="{% url 'tututuru:piloto-lista' %}">Ver todos</a>
+    </div>
+    <div class="f1-table-wrap">
+      <div style="overflow-x:auto;">
+        <table class="f1-table">
+          <thead><tr><th>Piloto</th><th>Equipe</th><th>Nacionalidade</th></tr></thead>
+          <tbody>
+            {% for piloto in ultimos_pilotos %}
+            <tr>
+              <td class="bold"><a href="{% url 'tututuru:piloto-detalhe' piloto.pk %}">{{ piloto.nome }}</a></td>
+              <td>{{ piloto.equipe.nome }}</td>
+              <td>{{ piloto.nacionalidade }}</td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="3" style="text-align:center;">Nenhum piloto cadastrado.</td></tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-5">
+    <div class="section-head"><div class="section-title">Próximas corridas</div></div>
+    <div class="d-flex flex-column gap-2">
+      {% for corrida in proximas_corridas %}
+      <a href="{% url 'tututuru:corrida-detalhe' corrida.pk %}" class="race-card">
+        <div style="flex:1;min-width:0;"><div class="race-name">{{ corrida.nome }}</div><div class="race-circuit"><i class="bi bi-geo-alt" style="font-size:.65rem;"></i> {{ corrida.circuito.nome }}</div></div>
+        <div class="race-date"><div class="race-date-val">{{ corrida.data|date:"d M" }}</div></div>
+      </a>
+      {% empty %}
+      <div class="f1-alert alert-info">Nenhuma corrida cadastrada.</div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+{% endif %}
+
 <div class="row g-3 mb-5">
   <div class="col-6 col-lg-3">
     <div class="stat-card">
